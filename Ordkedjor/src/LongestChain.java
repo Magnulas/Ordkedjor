@@ -5,8 +5,12 @@ class LongestChain
     int wordLength;
     
     // lalala
-    //Nu skrev lilla jag en kommentar
+    // hej
+    //Nu skrev jag en kommentar asdlfkja sld
     // En till kommentar
+    // Lalala
+    // Vilken fest!
+    // Slagsmålsklubben
     final char [] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 
 			       'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 
 			       's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'å', 
