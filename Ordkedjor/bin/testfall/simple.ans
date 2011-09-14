@@ -1,0 +1,7 @@
+aaab baaa: 3 ord
+aaab -> aaaa -> baaa
+abaa aaaa: 2 ord
+abaa -> aaaa
+aaaa bbbb: ingen lösning
+aaaa: 2 ord
+aaab -> aaaa
