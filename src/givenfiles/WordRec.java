@@ -1,3 +1,4 @@
+package givenfiles;
 class WordRec
 {
     String word;
