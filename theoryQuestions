@@ -6,4 +6,4 @@ Man använder sig av datastukturen WordRec för att hålla reda på vilka ord so
 
 3. MakeSons funktionen kör två forloopar, en innuti den andra, och för varje varv i den inre skapas det tre String:s (p.g.a. + operationerna mellan Strings).  Den inre loopen körs 30 ggr. och den yttre beror på hur LongestChain skapades men i denna labb 4 ggr. Dvs vi skapar 4*30*3 Strings, 360 String objekt. Eftersom alla Strings är lika långa skulle vi istället kunna skapa en array som vi bara byter värden i hela tiden.
 
-4. 
+4. Det räcker med en enda breddenförstsökning om man gör sökningen från ordet man vill hitta den längsta kortaste kedjan till. Då är det bara att söka sig utåt från det ordet tills man har skapat ett komplett träd. Den nod man befinner sig i när man byggt klart trädet ger en längsta kortaste kedja. Det är bara att följa fader-pekarna tillbaka till startnoden så är vi klara.
