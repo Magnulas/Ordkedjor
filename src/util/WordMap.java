@@ -64,4 +64,8 @@ public class WordMap {
         return index;
 	}
 	
+	public void clear(){
+		containsWord.clear();
+	}
+	
 }

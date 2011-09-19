@@ -8,7 +8,7 @@ class WordRec
 		word = word_;
 		father = father_;
     }
-
+        
     // ChainLength returnerar antalet ord i en kedja av ordposter. 
     public int ChainLength(){
 		int i = 0;

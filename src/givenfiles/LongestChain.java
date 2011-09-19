@@ -1,5 +1,6 @@
 package givenfiles;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import util.ChangableString;
@@ -11,7 +12,7 @@ class LongestChain
     int wordLength;
     char[] wordBuilder;
 
-    final char [] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 
+    final static char [] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 
 			       'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 
 			       's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'å', 
 			       'ä', 'ö', 'é' };
@@ -64,24 +65,66 @@ class LongestChain
 					
 					if(changeStr2 != null){
 						 res = changeStr2.toString();
-					} else{
-						res = null;
-					}
-					
-//				    res = WordList.Contains(x.word.substring(0,i)+alphabet[c]+x.word.substring(i+1));
-
-				    if (res != null && WordList.MarkAsUsedIfUnused(res)) {
-						WordRec wr = new WordRec(res, x); //TODO Gör från string till char[]
-						if (IsGoal(res)) return wr; //TODO Gör från string till char[]
-						q.Put(wr);
-				    }
+						 if (WordList.MarkAsUsedIfUnused(res)) {
+								WordRec wr = new WordRec(res, x); //TODO Gör från string till char[]
+								if (IsGoal(res)) return wr; //TODO Gör från string till char[]
+								q.Put(wr);
+						    }
+					}  
 				}
 		    }
 		}
 		return null;
     }
+    
+    private WordRec MakeParents(WordRec x) {
+    	
+    	ArrayList<String> neighbours;
+    	
+    	neighbours = getExistingNeighbours(x.word);
+    	WordRec wr = null;
+    	
+    	for(String n : neighbours){
+    		if(WordList.MarkAsUsedIfUnused(n)){
+    			wr = new WordRec(n, x);
+    			q.Put(wr);
+    		}
+    	}
 
-    // BreadthFirst utför en breddenförstsökning från startWord för att
+		return x;
+    }
+
+    private ArrayList<String> getExistingNeighbours(String word) {
+    	
+    	ChangableString changeStr;
+    	ArrayList<String> ret = new  ArrayList<String>();
+    	
+    	for (int i = 0; i < wordLength; i++) {
+		    for (int c = 0; c < alphabetLength; c++) {
+				if (alphabet[c] != word.charAt(i)) {
+				
+					for(int k = 0;k<wordBuilder.length;k++){
+						if(k==i){
+							wordBuilder[k] = alphabet[c];
+						} else{
+							wordBuilder[k] = word.charAt(k);
+						}
+					}
+					
+					changeStr = new ChangableString(wordBuilder);
+					ChangableString changeStr2 = WordList.Contains(changeStr);
+					
+					if(changeStr2 != null){
+						 ret.add(changeStr2.toString());
+					} 
+				}
+		    }
+		}
+    	
+		return ret;
+	}
+
+	// BreadthFirst utför en breddenförstsökning från startWord för att
     // hitta kortaste vägen till endWord. Den kortaste vägen returneras
     // som en kedja av ordposter (WordRec).
     // Om det inte finns något sätt att komma till endWord returneras null.
@@ -107,11 +150,13 @@ class LongestChain
     public void CheckAllStartWords(String endWord){
 		int maxChainLength = 0;
 		WordRec maxChainRec = null;
-		Iterator<ChangableString> iter = WordList.list.iterator();
-		while(iter.hasNext()){
+//		Iterator<ChangableString> iter = WordList.list.iterator();
+//		while(iter.hasNext()){
 //		for (int i = 0; i < WordList.size; i++) {
 //		    WordRec x = BreadthFirst(WordList.WordAt(i).toString(), endWord); //TODO Gör från string till char[]
-			WordRec x = BreadthFirst(iter.next().toString(), endWord);
+//			WordRec x = BreadthFirst(iter.next().toString(), endWord);
+		
+			WordRec x = MyBreadthFirst(endWord);
 			if (x != null) {
 			int len = x.ChainLength();
 				if (len > maxChainLength) {
@@ -120,8 +165,27 @@ class LongestChain
 				    // x.PrintChain(); // skriv ut den hittills längsta kedjan
 				}
 		    }
-		}
+//		}
 		System.out.println(endWord + ": " + maxChainLength + " ord");
 		if (maxChainRec != null) maxChainRec.PrintChain();
     }
+
+	private WordRec MyBreadthFirst(String endWord) {
+		WordList.EraseUsed();
+		WordRec start = new WordRec(endWord, null);
+		WordList.MarkAsUsedIfUnused(endWord); //TODO Gör från string till char[]
+		WordRec wr = null;
+		goalWord = endWord;
+		q.Empty();
+		q.Put(start);
+		try {
+			while(!q.IsEmpty()){
+				wr = MakeParents((WordRec) q.Get());
+			}
+		} catch (Exception e) {
+		    return null;
+		}
+		
+		return wr;
+	}
 }

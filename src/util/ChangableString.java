@@ -32,23 +32,37 @@ public class ChangableString implements Comparable<Object>{
 		
 		if(o instanceof ChangableString){
 			return equals((ChangableString)o);
-		} else{
-			return false;
 		}
+		if(o instanceof String){
+			return equals((String)o);
+		}
+		if(o instanceof char[]){
+			return equals((char[])o);
+		}
+		
+		return false;
 	}
 	
 	private boolean equals(ChangableString str){
 		
-		char[] ch = str.toCharArray();
+		return equals(str.toCharArray());
+	}
+	
+	private boolean equals(String str){
 		
-		if(characters.length!=ch.length){
+		return equals(str.toCharArray());
+	}
+	
+	private boolean equals(char[] str){
+				
+		if(characters.length!=str.length){
 			return false;
 		}
 		
-		int length = Math.min(characters.length, ch.length);
+		int length = Math.min(characters.length, str.length);
 		
 		for(int i = 0;i<length;i++){
-			if(characters[i]!=ch[i]){
+			if(characters[i]!=str[i]){
 				return false;
 			}
 		}
@@ -74,19 +88,16 @@ public class ChangableString implements Comparable<Object>{
 		return new String(characters);
 	}
 	
-	public int compareTo(ChangableString str) {
-
-		char[] ch = str.toCharArray();
+	private int compareTo(char[] str) {
 				
-		int length = Math.min(characters.length, ch.length);
-		
+		int length = Math.min(characters.length, str.length);
 		
 		//TODO make it not depending on char value but on alphabetic
 		for(int i = 0;i<length;i++){
-			if(characters[i]>ch[i]){
+			if(characters[i]>str[i]){
 				return -1;
 			} else{
-				if(characters[i]<ch[i]){
+				if(characters[i]<str[i]){
 					return 1;
 				}
 			}
@@ -100,16 +111,26 @@ public class ChangableString implements Comparable<Object>{
 
 		if(o instanceof ChangableString){
 			return compareTo((ChangableString)o);
-		} else{
-			throw new ClassCastException();
 		}
+		if(o instanceof String){
+			return compareTo((String)o);
+		}
+		if(o instanceof char[]){
+			return compareTo((char[])o);
+		}
+		
+		throw new ClassCastException();
+		
 	}
 	
-//	public void setChars(char[] chars, int off, int length) {
-//		while(off<characters.length||length==0){
-//			
-//			off++;
-//			length--;
-//		}
-//	}
+	private int compareTo(ChangableString str) {
+		
+		return compareTo(str.toCharArray());
+	}
+	
+	private int compareTo(String str) {
+		
+		return compareTo(str.toCharArray());
+	}
+	
 }

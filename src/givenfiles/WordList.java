@@ -4,6 +4,7 @@ import java.util.Vector;
 import java.io.*;
 
 import util.ChangableString;
+import util.WordMap;
 
 // Klassen WordList innehåller en ordlista och en datastruktur som håller
 // reda på använda ord.
@@ -11,7 +12,7 @@ import util.ChangableString;
 class WordList
 {
     static TreeSet<ChangableString> list; // ordlista
-    static private TreeSet<String> used; // databas med använda ord
+    static private WordMap used; // databas med använda ord
     static int wordLength;
     static int size; // antal ord i ordlistan
 
@@ -31,7 +32,7 @@ class WordList
 		    list.add(new ChangableString(s));
 		    size++;
 		}
-		used = new TreeSet<String>();
+		used = new WordMap(LongestChain.alphabet, wordLength);
     }
 
     // WordAt returnerar ordet med angivet index i ordlistan.
@@ -49,8 +50,8 @@ class WordList
     // MarkAsUsedIfUnused kollar om w är använt tidigare och returneras i så
     // fall false. Annars markeras w som använt och true returneras.
     static public boolean MarkAsUsedIfUnused(String w){
-		if (used.contains(w)) return false;
-		used.add(w);
+		if (used.contains(w.toCharArray())) return false;
+		used.add(w.toCharArray());
 		return true;
     }
 
