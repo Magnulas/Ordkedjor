@@ -1,4 +1,5 @@
 package givenfiles;
+import java.util.TreeSet;
 import java.util.Vector;
 import java.io.*;
 
@@ -9,8 +10,8 @@ import util.ChangableString;
 
 class WordList
 {
-    static private Vector<ChangableString> list; // ordlista
-    static private Vector<String> used; // databas med använda ord
+    static TreeSet<ChangableString> list; // ordlista
+    static private TreeSet<String> used; // databas med använda ord
     static int wordLength;
     static int size; // antal ord i ordlistan
 
@@ -19,7 +20,7 @@ class WordList
     static public void Read(int wordLength_, BufferedReader input)throws IOException {
 		wordLength = wordLength_;
 		size = 0;
-		list = new Vector<ChangableString>();
+		list = new TreeSet<ChangableString>();
 		while (true) {
 		    String s = input.readLine();
 		    if (s.equals("#")) break;
@@ -30,14 +31,14 @@ class WordList
 		    list.add(new ChangableString(s));
 		    size++;
 		}
-		used = new Vector<String>(size);
+		used = new TreeSet<String>();
     }
 
     // WordAt returnerar ordet med angivet index i ordlistan.
-    static public ChangableString WordAt(int index){
-		if (index >= 0 && index < size) return list.elementAt(index);
-		else return null;
-    }
+//    static public ChangableString WordAt(int index){
+//		if (index >= 0 && index < size) return list.elementAt(index);
+//		else return null;
+//    }
 
     // Contains slår upp w i ordlistan och returnerar ordet om det finns med.
     // Annars returneras null.

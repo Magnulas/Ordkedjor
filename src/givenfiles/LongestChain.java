@@ -1,5 +1,7 @@
 package givenfiles;
 
+import java.util.Iterator;
+
 import util.ChangableString;
 
 class LongestChain
@@ -105,9 +107,12 @@ class LongestChain
     public void CheckAllStartWords(String endWord){
 		int maxChainLength = 0;
 		WordRec maxChainRec = null;
-		for (int i = 0; i < WordList.size; i++) {
-		    WordRec x = BreadthFirst(WordList.WordAt(i).toString(), endWord); //TODO Gör från string till char[]
-		    if (x != null) {
+		Iterator<ChangableString> iter = WordList.list.iterator();
+		while(iter.hasNext()){
+//		for (int i = 0; i < WordList.size; i++) {
+//		    WordRec x = BreadthFirst(WordList.WordAt(i).toString(), endWord); //TODO Gör från string till char[]
+			WordRec x = BreadthFirst(iter.next().toString(), endWord);
+			if (x != null) {
 			int len = x.ChainLength();
 				if (len > maxChainLength) {
 				    maxChainLength = len;

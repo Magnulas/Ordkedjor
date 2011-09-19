@@ -7,7 +7,7 @@ package util;
  * @author Magnus
  *
  */
-public class ChangableString {
+public class ChangableString implements Comparable<Object>{
 
 	char[] characters;
 	
@@ -39,8 +39,16 @@ public class ChangableString {
 	
 	private boolean equals(ChangableString str){
 		
-		for(int i = 0;i<characters.length;i++){
-			if(characters[i]!=str.charAt(i)){
+		char[] ch = str.toCharArray();
+		
+		if(characters.length!=ch.length){
+			return false;
+		}
+		
+		int length = Math.min(characters.length, ch.length);
+		
+		for(int i = 0;i<length;i++){
+			if(characters[i]!=ch[i]){
 				return false;
 			}
 		}
@@ -64,6 +72,37 @@ public class ChangableString {
 	public String toString(){
 		
 		return new String(characters);
+	}
+	
+	public int compareTo(ChangableString str) {
+
+		char[] ch = str.toCharArray();
+				
+		int length = Math.min(characters.length, ch.length);
+		
+		
+		//TODO make it not depending on char value but on alphabetic
+		for(int i = 0;i<length;i++){
+			if(characters[i]>ch[i]){
+				return -1;
+			} else{
+				if(characters[i]<ch[i]){
+					return 1;
+				}
+			}
+		}
+		
+		return 0;
+	}
+	
+	@Override
+	public int compareTo(Object o) {
+
+		if(o instanceof ChangableString){
+			return compareTo((ChangableString)o);
+		} else{
+			throw new ClassCastException();
+		}
 	}
 	
 //	public void setChars(char[] chars, int off, int length) {
