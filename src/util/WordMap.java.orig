@@ -63,9 +63,12 @@ public class WordMap {
         }
         return index;
 	}
+<<<<<<< HEAD
+=======
 	
 	public void clear(){
 		containsWord.clear();
 	}
 	
+>>>>>>> 79d5d067ef507d1ad95340175cafda9236f3da3e
 }

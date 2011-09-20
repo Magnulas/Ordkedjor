@@ -7,7 +7,7 @@ package util;
  * @author Magnus
  *
  */
-public class ChangableString {
+public class ChangableString implements Comparable<Object>{
 
 	char[] characters;
 	
@@ -32,15 +32,37 @@ public class ChangableString {
 		
 		if(o instanceof ChangableString){
 			return equals((ChangableString)o);
-		} else{
-			return false;
 		}
+		if(o instanceof String){
+			return equals((String)o);
+		}
+		if(o instanceof char[]){
+			return equals((char[])o);
+		}
+		
+		return false;
 	}
 	
 	private boolean equals(ChangableString str){
 		
-		for(int i = 0;i<characters.length;i++){
-			if(characters[i]!=str.charAt(i)){
+		return equals(str.toCharArray());
+	}
+	
+	private boolean equals(String str){
+		
+		return equals(str.toCharArray());
+	}
+	
+	private boolean equals(char[] str){
+				
+		if(characters.length!=str.length){
+			return false;
+		}
+		
+		int length = Math.min(characters.length, str.length);
+		
+		for(int i = 0;i<length;i++){
+			if(characters[i]!=str[i]){
 				return false;
 			}
 		}
@@ -66,11 +88,49 @@ public class ChangableString {
 		return new String(characters);
 	}
 	
-//	public void setChars(char[] chars, int off, int length) {
-//		while(off<characters.length||length==0){
-//			
-//			off++;
-//			length--;
-//		}
-//	}
+	private int compareTo(char[] str) {
+				
+		int length = Math.min(characters.length, str.length);
+		
+		//TODO make it not depending on char value but on alphabetic
+		for(int i = 0;i<length;i++){
+			if(characters[i]>str[i]){
+				return -1;
+			} else{
+				if(characters[i]<str[i]){
+					return 1;
+				}
+			}
+		}
+		
+		return 0;
+	}
+	
+	@Override
+	public int compareTo(Object o) {
+
+		if(o instanceof ChangableString){
+			return compareTo((ChangableString)o);
+		}
+		if(o instanceof String){
+			return compareTo((String)o);
+		}
+		if(o instanceof char[]){
+			return compareTo((char[])o);
+		}
+		
+		throw new ClassCastException();
+		
+	}
+	
+	private int compareTo(ChangableString str) {
+		
+		return compareTo(str.toCharArray());
+	}
+	
+	private int compareTo(String str) {
+		
+		return compareTo(str.toCharArray());
+	}
+	
 }
