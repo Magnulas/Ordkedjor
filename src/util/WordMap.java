@@ -63,5 +63,4 @@ public class WordMap {
         }
         return index;
 	}
-	
 }
