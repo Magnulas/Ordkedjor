@@ -35,7 +35,7 @@ public class Main
 		    	WordRec wr = wordGraph.checkAllStartWords(tokens[0]);
 
 			    System.out.println(tokens[0] + " " + wr.ChainLength() + " ord");
-			    System.out.println(wr.getReversedChainString());
+			    System.out.println(wr);
 		    }
 		    else if (tokens.length == 2) {
 				WordRec wr = wordGraph.shortestPathBetween(tokens[0], tokens[1]);
@@ -43,7 +43,7 @@ public class Main
 				    System.out.println(tokens[0] + " " + tokens[1] + ": ingen lösning");
 				} else {
 				    System.out.println(tokens[0] + " " + tokens[1] + ": "+ wr.ChainLength() + " ord");
-				    System.out.println(wr.getReversedChainString());
+				    System.out.println(wr);
 				}
 		    }
 		    else{
