@@ -3,10 +3,12 @@ class WordRec
 {
     String word;
     WordRec father; // pekare till ordposten som skapat detta ord
+    
+    private static final String NEXT_ARROW = " -> ";
 
-    public WordRec(String word_, WordRec father_) {
-		word = word_;
-		father = father_;
+    public WordRec(String word, WordRec father) {
+		this.word = word;
+		this.father = father;
     }
         
     // ChainLength returnerar antalet ord i en kedja av ordposter. 
@@ -15,23 +17,23 @@ class WordRec
 		for (WordRec x = this; x != null; x = x.father) i++;
 		return i;
     }
-
-    private void PrintChainHelp(){
-		if (father != null) father.PrintChainHelp();
-		PrintWord();
-		System.out.print(" -> ");
+    
+    public String getReversedChainString() {
+    	StringBuilder builderBob = new StringBuilder();
+    	builderBob.append(word);
+    	if(father != null){
+    		father.getReversedChainStringHelper(builderBob);
+    	}
+    	return builderBob.toString();
     }
+    
+    public void getReversedChainStringHelper(StringBuilder builderBob) {
+    	builderBob.append(NEXT_ARROW);
+    	builderBob.append(word);
 
-    // PrintChain skriver ut en kedja av ordposter.
-    public void PrintChain(){
-		if (father != null) father.PrintChainHelp();
-		PrintWord();
-		System.out.println();
-    }
-
-    // PrintWord skriver ut ett ord.
-    public void PrintWord(){
-    	System.out.print(word);
+    	if(father != null){
+    		father.getReversedChainStringHelper(builderBob);
+    	}
     }
 }
 

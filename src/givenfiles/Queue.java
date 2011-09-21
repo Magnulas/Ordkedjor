@@ -1,33 +1,33 @@
 package givenfiles;
 // Queue är en kö med metoderna Put, Get, IsEmpty och Empty.
 
-class ListNode
+class ListNode<E>
 {
-    Object element;
-    ListNode next = null;
+    E element;
+    ListNode<E> next = null;
 }
 
-class Queue
+class Queue<E>
 {
-    private ListNode front = null, back = null;
+    private ListNode<E> front = null, back = null;
 
-    public void Put(Object element){ 
-		if (IsEmpty()) back = front = new ListNode();
-		else back = back.next = new ListNode();
+    public void put(E element){ 
+		if (isEmpty()) back = front = new ListNode<E>();
+		else back = back.next = new ListNode<E>();
 		
 		back.element = element;
     }
 
-    public Object Get() throws Exception{ 
-		if (IsEmpty()) throw new Exception();
-		Object element = front.element;
+    public E get() { 
+		if (isEmpty()) return null;
+		E element = front.element;
 		front = front.next;
 		return element;
     }
 
-    public boolean IsEmpty()
+    public boolean isEmpty()
     { return front == null; }
 
-    public void Empty()
+    public void empty()
     { front = back = null; }
 }
