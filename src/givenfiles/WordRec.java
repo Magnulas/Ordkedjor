@@ -1,9 +1,7 @@
 package givenfiles;
 class WordRec
 {
-    String word;
-    WordRec father; // pekare till ordposten som skapat detta ord
-    
+    private Word word;    
     private boolean reversed;
     
     private static final String NEXT_ARROW = " -> ";
@@ -13,63 +11,81 @@ class WordRec
     }
     
     public WordRec(String word, WordRec father, boolean reversed) {
-		this.word = word;
-		this.father = father;
+    	
+    	if(father!=null){
+    		this.word = new Word(word,father.word);
+    	} else{
+    		this.word = new Word(word,null);
+    	}
+		
 		this.reversed = reversed;
-		if(father!=null){
-			this.reversed = father.reversed;
-		}
     }
+
+    private class Word{
+    	
+    	String word;
+    	Word father;
+    	
+    	public Word(String word, Word father) {
+    		this.word = word;
+    		this.father = father;
+        }
+    	
+    	private String getReversedChainString() {
+        	StringBuilder builderBob = new StringBuilder();
+        	builderBob.append(word);
+        	if(father != null){
+        		father.getReversedChainStringHelper(builderBob);
+        	}
+        	return builderBob.toString();
+        }
         
+        private void getReversedChainStringHelper(StringBuilder builderBob) {
+        	builderBob.append(NEXT_ARROW);
+        	builderBob.append(word);
+
+        	if(father != null){
+        		father.getReversedChainStringHelper(builderBob);
+        	}
+        }
+        
+        private String getChainString() {
+        	StringBuilder builderBob = new StringBuilder();
+        	if(father != null){
+        		father.getChainStringHelper(builderBob);
+        	}
+        	builderBob.append(word);
+        	return builderBob.toString();
+        }
+        
+        private void getChainStringHelper(StringBuilder builderBob) {
+        	if(father != null){
+        		father.getChainStringHelper(builderBob);
+        	}
+        	builderBob.append(word);
+        	builderBob.append(NEXT_ARROW);
+        }
+    }
+    
     // ChainLength returnerar antalet ord i en kedja av ordposter. 
     public int ChainLength(){
 		int i = 0;
-		for (WordRec x = this; x != null; x = x.father) i++;
+		for (Word x = word; x != null; x = x.father) i++;
 		return i;
     }
     
-    private String getReversedChainString() {
-    	StringBuilder builderBob = new StringBuilder();
-    	builderBob.append(word);
-    	if(father != null){
-    		father.getReversedChainStringHelper(builderBob);
-    	}
-    	return builderBob.toString();
-    }
-    
-    private void getReversedChainStringHelper(StringBuilder builderBob) {
-    	builderBob.append(NEXT_ARROW);
-    	builderBob.append(word);
-
-    	if(father != null){
-    		father.getReversedChainStringHelper(builderBob);
-    	}
-    }
-    
-    private String getChainString() {
-    	StringBuilder builderBob = new StringBuilder();
-    	if(father != null){
-    		father.getChainStringHelper(builderBob);
-    	}
-    	builderBob.append(word);
-    	return builderBob.toString();
-    }
-    
-    private void getChainStringHelper(StringBuilder builderBob) {
-    	if(father != null){
-    		father.getChainStringHelper(builderBob);
-    	}
-    	builderBob.append(word);
-    	builderBob.append(NEXT_ARROW);
+    public String getWord(){
+    	
+    	return word.word;
     }
     
     @Override
     public String toString(){
     	
     	if(reversed){
-    		return getReversedChainString();
+    		return word.getReversedChainString();
     	} else{
-    		return getChainString();
+    		return word.getChainString();
     	}
     }
 }

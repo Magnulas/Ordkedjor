@@ -53,13 +53,13 @@ class WordGraph
 	    while (!q.isEmpty()) {
 	    	WordRec x = q.get();
 	    	
-	    	ArrayList<String> neighbours = getNeighbors(x.word);
+	    	ArrayList<String> neighbours = getNeighbors(x.getWord());
 	    	
 	    	for(String neighbour : neighbours){
 	    		if(used.get(neighbour) == null){ // null is false
 	    			used.put(neighbour, true);
 	    			
-	    			wr = new WordRec(neighbour, x);
+	    			wr = new WordRec(neighbour, x,true);
 	    			if (endWord != null && neighbour.equals(endWord)) {
 	    				return wr;
 	    			}
