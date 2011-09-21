@@ -1,55 +1,28 @@
 package givenfiles;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.Vector;
-import java.io.*;
-
-import util.WordMap;
 
 // Klassen WordList innehåller en ordlista och en datastruktur som håller
 // reda på använda ord.
 
 class WordGraph
 {
-    static HashMap<String, ArrayList<String>> neighborMap; // ordlista
-    //static private WordMap used; // databas med använda ord
-    static private HashMap<String, Boolean> used; // databas med använda ord
-    static int wordLength;
-    static int size; // antal ord i ordlistan
-
-    // Read läser in en ordlista från strömmen input. Alla ord ska ha
-    // wordLength bokstäver.
-    static public void Read(int wordLength_, BufferedReader input)throws IOException {
-		wordLength = wordLength_;
-		size = 0;
+    private HashMap<String, ArrayList<String>> neighborMap; // ordlista
+    
+    public WordGraph(ArrayList<String> words) {
 		neighborMap = new HashMap<String, ArrayList<String>>();
-		neighborMap.keySet();
-		
-		while (true) {
-		    String s = input.readLine();
-		    if (s.equals("#")) break;
-		    if (s.length() != wordLength)
-			System.out.println("Rad " + size + 
-					   " i filen innehåller inte " + 
-					   wordLength + " tecken.");
-		    neighborMap.put(s, new ArrayList<String>());
-		    size++;
-		}
-		for(String currentWord : neighborMap.keySet()) {
-			for(String otherWord : neighborMap.keySet()) {
+		for(String currentWord : words) {
+			ArrayList<String> neighbours = new ArrayList<String>();
+			for(String otherWord : words) {
 				if(areNeighbors(currentWord, otherWord)) {
-					neighborMap.get(currentWord).add(otherWord);
-//					System.out.println("currentWord: " + currentWord + " neighbor: " + otherWord);
+					neighbours.add(otherWord);
 				}
 			}
+			neighborMap.put(currentWord, neighbours);
 		}
-		
-		used = new HashMap<String, Boolean>();
-		resetUsed();
     }
     
-    private static boolean areNeighbors(String s1, String s2) {
+    private boolean areNeighbors(String s1, String s2) {
     	int nDifferentChars = 0;
     	for(int i = 0; i < s1.length(); i++) {
     		if(s1.charAt(i) != s2.charAt(i)) {
@@ -64,22 +37,52 @@ class WordGraph
 
     // Contains slår upp w i ordlistan och returnerar ordet om det finns med.
     // Annars returneras null.
-    static public ArrayList<String>getNeighbors(String word) {
+    public ArrayList<String>getNeighbors(String word) {
     	return neighborMap.get(word);
     }
-
-    static public void markAsUsed(String word) {
-    	used.put(word, true);
+    
+    private WordRec breadthFirst(String startWord, String endWord){
+    	
+		WordRec start = new WordRec(endWord, null);
+	    HashMap<String, Boolean> used = new HashMap<String, Boolean>(); // databas med använda ord
+		Queue<WordRec> q = new Queue<WordRec>();
+		
+		String goalWord = startWord;
+		q.put(start);
+		WordRec wr = null;
+		
+	    while (!q.isEmpty()) {
+	    	WordRec x = q.get();
+	    	
+	    	ArrayList<String> neighbours = getNeighbors(x.word);
+	    	
+	    	for(String neighbour : neighbours){
+	    		if(used.get(neighbour) == null){ // null is false
+	    			used.put(neighbour, true);
+	    			
+	    			wr = new WordRec(neighbour, x);
+	    			if (goalWord != null && neighbour.equals(goalWord)) {
+	    				return wr;
+	    			}
+	    			q.put(wr);
+	    		}
+	    	}
+	    }
+	    
+	    if(startWord != null) {
+	    	return null;
+	    }
+	    
+	    return wr;
     }
     
-    static public boolean isUsed(String word) {
-    	return used.get(word);
+    public WordRec shortestPathBetween(String startWord, String endWord) {
+    	return breadthFirst(startWord, endWord);
     }
 
-    // EraseUsed gör så att inga ord anses använda längre.
-    static public void resetUsed(){
-		for(String currentWord : neighborMap.keySet()) {
-			used.put(currentWord, false);
-		}
+    // CheckAllStartWords hittar den längsta kortaste vägen från något ord
+    // till endWord. Den längsta vägen skrivs ut.
+    public WordRec checkAllStartWords(String endWord){
+		return breadthFirst(null, endWord);
     }
 }

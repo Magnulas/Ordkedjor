@@ -25,9 +25,11 @@ class Queue<E>
 		return element;
     }
 
-    public boolean isEmpty()
-    { return front == null; }
+    public boolean isEmpty(){
+    	return front == null;
+    }
 
-    public void empty()
-    { front = back = null; }
+    public void empty(){
+    	front = back = null;
+    }
 }

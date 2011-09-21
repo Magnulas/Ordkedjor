@@ -22,7 +22,7 @@ public class RunWithoutPipe {
 		String fileToRun;
 		
 		if(args.length == 0){
-			fileToRun = "src/testfall/longchains.in";
+			fileToRun = "src/testfall/sample.in";
 		} else{
 			fileToRun = args[0];
 		}
