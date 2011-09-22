@@ -8,7 +8,7 @@ public class Main
 {
     final static private int WordLength = 4;
     final static private boolean UseTimer = true;
-        
+   
     public static void main (String args[]) throws IOException {
     	
     	Timer timer = null;

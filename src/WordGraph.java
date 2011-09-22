@@ -12,8 +12,12 @@ class WordGraph
 		neighbourMap = new HashMap<String, ArrayList<String>>();
 
 		/**
-		 * denna algoritm minskade med 1/4, behöver fortfarande
-		 * minska med 1/2 om vi vill till 0,2 ms
+		 * Denna algoritm minskade med 1/4. Det som tar tid är 
+		 * neighbourMap.get(currentWord) och 
+		 * neighbourMap.get(otherWord).add(currentWord).För att göra detta
+		 * snabbare använd binärsökning ifall vi wanna be the very best,
+		 * like no one ever was! To catch them is my real test
+		 * to train them is my cause!
 		 */
 		for(String word : words){
 			neighbourMap.put(word, new ArrayList<String>());
