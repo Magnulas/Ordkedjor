@@ -6,20 +6,16 @@ class WordRec
     private static final String NEXT_ARROW = " -> ";
 
     public WordRec(String word, WordRec father) {
-		this(word, father, false);
-    }
-    
-    public WordRec(String word, WordRec father, boolean reversed) {
     	
     	if(father!=null){
     		this.word = new WordNode(word,father.word);
     	} else{
     		this.word = new WordNode(word,null);
     	}
-		
-		this.reversed = reversed;
+    	
+    	reversed = false;
     }
-
+    
     private class WordNode{
     	
     	String word;
@@ -86,6 +82,10 @@ class WordRec
     	} else{
     		return word.getChainString();
     	}
+    }
+    
+    public void reverse(){
+    	reversed = !reversed;
     }
 }
 

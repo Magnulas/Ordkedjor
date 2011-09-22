@@ -17,7 +17,13 @@ public class Main
     	}
     	
     	BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-		WordGraph wordGraph = new WordGraph(readDictionaryWords(stdin));
+		
+    	if(UseTimer) {
+			System.out.println("Time to read graph: " + timer.getElapsedTime() + " ms");
+			timer.restart();
+		}
+    	
+    	WordGraph wordGraph = new WordGraph(readDictionaryWords(stdin));
 		
 		if(UseTimer) {
 			System.out.println("Time to build graph: " + timer.getElapsedTime() + " ms");
