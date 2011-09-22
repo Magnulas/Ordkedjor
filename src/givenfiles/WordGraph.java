@@ -7,10 +7,10 @@ import java.util.HashMap;
 
 class WordGraph
 {
-    private HashMap<String, ArrayList<String>> neighborMap; // ordlista
+    private HashMap<String, ArrayList<String>> neighbourMap; // ordlista
     
     public WordGraph(ArrayList<String> words) {
-		neighborMap = new HashMap<String, ArrayList<String>>();
+		neighbourMap = new HashMap<String, ArrayList<String>>();
 		for(String currentWord : words) {
 			ArrayList<String> neighbours = new ArrayList<String>();
 			for(String otherWord : words) {
@@ -18,7 +18,7 @@ class WordGraph
 					neighbours.add(otherWord);
 				}
 			}
-			neighborMap.put(currentWord, neighbours);
+			neighbourMap.put(currentWord, neighbours);
 		}
     }
     
@@ -34,33 +34,27 @@ class WordGraph
     	}
     	return nDifferentChars == 1;
     }
-
-    // Contains slår upp w i ordlistan och returnerar ordet om det finns med.
-    // Annars returneras null.
-    public ArrayList<String>getNeighbors(String word) {
-    	return neighborMap.get(word);
-    }
     
     private WordRec breadthFirst(String startWord, String endWord){
     	
-		WordRec start = new WordRec(endWord, null);
+		WordRec startRec = new WordRec(endWord, null);
 	    HashMap<String, Boolean> used = new HashMap<String, Boolean>(); // databas med använda ord
 		Queue<WordRec> q = new Queue<WordRec>();
 		
 		String goalWord = startWord;
-		q.put(start);
+		q.put(startRec);
 		WordRec wr = null;
 		
 	    while (!q.isEmpty()) {
-	    	WordRec x = q.get();
+	    	WordRec currentRec = q.get();
 	    	
-	    	ArrayList<String> neighbours = getNeighbors(x.word);
+	    	ArrayList<String> neighbours = neighbourMap.get(currentRec.word);
 	    	
 	    	for(String neighbour : neighbours){
 	    		if(used.get(neighbour) == null){ // null is false
 	    			used.put(neighbour, true);
 	    			
-	    			wr = new WordRec(neighbour, x);
+	    			wr = new WordRec(neighbour, currentRec);
 	    			if (goalWord != null && neighbour.equals(goalWord)) {
 	    				return wr;
 	    			}
@@ -81,8 +75,8 @@ class WordGraph
     }
 
     // CheckAllStartWords hittar den längsta kortaste vägen från något ord
-    // till endWord. Den längsta vägen skrivs ut.
-    public WordRec checkAllStartWords(String endWord){
+    // till endWord.
+    public WordRec longestOfTheShortestPathsTo(String endWord){
 		return breadthFirst(null, endWord);
     }
 }

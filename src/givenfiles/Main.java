@@ -23,7 +23,7 @@ public class Main
 		
 		if(UseTimer) {
 			System.out.println("Time to build graph: " + timer.getElapsedTime() + " ms");
-			timer.start();
+			timer.restart();
 		}
 		
 		while (true) {
@@ -32,8 +32,8 @@ public class Main
 		    String tokens[] = line.split(" ");
 		    
 		    if (tokens.length == 1) {
-		    	WordRec wr = wordGraph.checkAllStartWords(tokens[0]);
-
+		    	WordRec wr = wordGraph.longestOfTheShortestPathsTo(tokens[0]);
+		    	
 			    System.out.println(tokens[0] + " " + wr.ChainLength() + " ord");
 			    System.out.println(wr.getReversedChainString());
 		    }
@@ -53,7 +53,7 @@ public class Main
 		    }
 		    if(UseTimer) {
 		    	System.out.println("Time to search: " + timer.getElapsedTime() + " ms");
-				timer.start();
+				timer.restart();
 		    }
 		}
     }

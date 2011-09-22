@@ -31,6 +31,15 @@ public class Timer {
 		pausedTime = 0;
 	}
 	
+
+	/**
+	 * Restarts the timer.
+	 * 
+	 */
+	public void restart() {
+		start();
+	}
+	
 	/**
 	 * Gets the time that has elapsed since start() was called.
 	 * @return The elapsed time since start() was called in milliseconds
