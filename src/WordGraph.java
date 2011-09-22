@@ -10,10 +10,22 @@ class WordGraph
     
     public WordGraph(ArrayList<String> words) {
 		neighbourMap = new HashMap<String, ArrayList<String>>();
-		for(String currentWord : words) {
-			ArrayList<String> neighbours = new ArrayList<String>();
-			for(String otherWord : words) {
+
+		/**
+		 * denna algoritm minskade med 1/4, behöver fortfarande
+		 * minska med 1/2 om vi vill till 0,2 ms
+		 */
+		for(String word : words){
+			neighbourMap.put(word, new ArrayList<String>());
+		}
+		
+		for(int i = 0;i<words.size();i++) {
+			String currentWord = words.get(i);
+			ArrayList<String> neighbours = neighbourMap.get(currentWord);
+			for(int j = i+1;j<words.size();j++) {
+				String otherWord = words.get(j);
 				if(areNeighbors(currentWord, otherWord)) {
+					neighbourMap.get(otherWord).add(currentWord);
 					neighbours.add(otherWord);
 				}
 			}

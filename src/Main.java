@@ -7,13 +7,33 @@ import java.util.ArrayList;
 public class Main
 {
     final static private int WordLength = 4;
-    
+    final static private boolean UseTimer = true;
+        
     public static void main (String args[]) throws IOException {
     	
+    	Timer timer = null;
+    	
+    	if(UseTimer) {
+    		timer = new Timer();
+    		timer.start();
+    	}
+
     	BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 		
-    	WordGraph wordGraph = new WordGraph(readDictionaryWords(stdin));
+    	ArrayList<String> data = readDictionaryWords(stdin);
+    	
+    	if(UseTimer) {
+			System.out.println("Time to read graph: " + timer.getElapsedTime() + " ms");
+			timer.restart();
+		}
+    	
+    	WordGraph wordGraph = new WordGraph(data);
 		
+    	if(UseTimer) {
+			System.out.println("Time to build graph: " + timer.getElapsedTime() + " ms");
+			timer.restart();
+		}
+    	
 		while (true) {
 		    String line = stdin.readLine();
 		    if (line == null) break;
@@ -42,6 +62,11 @@ public class Main
 				System.out.println("felaktig fråga: '" + line + "'");
 				System.out.println("syntax för frågor: slutord");
 				System.out.println("eller:             startord slutord");
+		    }
+		    
+		    if(UseTimer) {
+		    	System.out.println("Time to search: " + timer.getElapsedTime() + " ms");
+				timer.restart();
 		    }
 	
 		}
