@@ -36,6 +36,11 @@ class WordGraph
     
     private WordRec breadthFirst(String startWord,String endWord){
     	
+    	/**
+    	 * För att göra optimering borde vi kanske inte göra så många wordrec
+    	 *  objekt utan använda någon form av linkad lista?
+    	 */
+    	
 //    	Denna är för att kolla att man inte använder ett ord som inte finns.
 //    	Men i uppgiftslydelsen är det givet att alla ord man söker på finns
 //    	i ordlistan så detta är inte problemet.
@@ -44,11 +49,12 @@ class WordGraph
 //    	if(!neighbourMap.containsKey(startWord)){
 //    		return null;
 //    	}
-		WordRec wr = new WordRec(startWord, null);
+    	
+		WordRec start = new WordRec(startWord, null);
 	    HashMap<String, Boolean> used = new HashMap<String, Boolean>(); // databas med använda ord
 		Queue<WordRec> q = new Queue<WordRec>();
 		
-		q.put(wr);
+		q.put(start);
 //    	Fanns problem för:
 //    	aaaa
 //    	aaan
@@ -59,6 +65,8 @@ class WordGraph
 //    	aaaa -> aaan -> aaaa
 //		Fixat genom used.put(startWord,true);
 		used.put(startWord,true);
+		
+		WordRec wr = null;
 		
 	    while (!q.isEmpty()) {
 	    	WordRec currentRec = q.get();
@@ -83,7 +91,9 @@ class WordGraph
 	    	return null;
 	    }
 	    
-	    wr.reverse();
+	    if(wr!=null){
+	    	wr.reverse();
+	    }
 	    	
 	    return wr;
     }

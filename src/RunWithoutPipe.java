@@ -21,6 +21,7 @@ public class RunWithoutPipe {
 		
 		if(args.length == 0){
 			fileToRun = "src/testfall/longchains.in";
+//			fileToRun = "src/word4";
 		} else{
 			fileToRun = args[0];
 		}

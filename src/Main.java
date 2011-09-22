@@ -7,28 +7,12 @@ import java.util.ArrayList;
 public class Main
 {
     final static private int WordLength = 4;
-    final static private boolean UseTimer = false;
     
     public static void main (String args[]) throws IOException {
-    	Timer timer = null;
-    	if(UseTimer) {
-    		timer = new Timer();
-    		timer.start();
-    	}
     	
     	BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 		
-    	if(UseTimer) {
-			System.out.println("Time to read graph: " + timer.getElapsedTime() + " ms");
-			timer.restart();
-		}
-    	
     	WordGraph wordGraph = new WordGraph(readDictionaryWords(stdin));
-		
-		if(UseTimer) {
-			System.out.println("Time to build graph: " + timer.getElapsedTime() + " ms");
-			timer.restart();
-		}
 		
 		while (true) {
 		    String line = stdin.readLine();
@@ -38,8 +22,12 @@ public class Main
 		    if (tokens.length == 1) {
 		    	WordRec wr = wordGraph.longestOfTheShortestPathsTo(tokens[0]);
 		    	
-			    System.out.println(tokens[0] + " " + wr.ChainLength() + " ord");
-			    System.out.println(wr);
+		    	if(wr!=null){
+				    System.out.println(tokens[0] + ": " + wr.ChainLength() + " ord");
+				    System.out.println(wr);
+		    	} else{
+		    		System.out.println(tokens[0] + ": 0 ord");
+		    	}
 		    }
 		    else if (tokens.length == 2) {
 				WordRec wr = wordGraph.shortestPathBetween(tokens[0], tokens[1]);
@@ -55,10 +43,7 @@ public class Main
 				System.out.println("syntax för frågor: slutord");
 				System.out.println("eller:             startord slutord");
 		    }
-		    if(UseTimer) {
-		    	System.out.println("Time to search: " + timer.getElapsedTime() + " ms");
-				timer.restart();
-		    }
+	
 		}
     }
     
