@@ -26,5 +26,4 @@ varv i den inre skapas det tre String:s (p.g.a. + operationerna mellan Strings).
 man vill hitta den längsta kortaste kedjan till. Då är det bara att söka sig 
 utåt från det ordet tills man har skapat ett komplett träd. Den nod man befinner 
 sig i när man byggt klart trädet ger en längsta kortaste kedja. Det är bara att
- följa fader-pekarna tillbaka till startnoden så är vi klara
- .
+ följa fader-pekarna tillbaka till startnoden så är vi klara.

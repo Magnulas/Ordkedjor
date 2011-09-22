@@ -1,4 +1,3 @@
-package util;
 
 /**
  * A timer that helps measure execution time.

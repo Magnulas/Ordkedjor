@@ -1,4 +1,3 @@
-package givenfiles;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,27 +34,26 @@ class WordGraph
     	return nDifferentChars == 1;
     }
     
-    private WordRec breadthFirst(String startWord, String endWord){
+    private WordRec breadthFirst(String startWord,String endWord){
     	
-		WordRec startRec = new WordRec(endWord, null);
+		WordRec start = new WordRec(startWord, null, true);
 	    HashMap<String, Boolean> used = new HashMap<String, Boolean>(); // databas med använda ord
 		Queue<WordRec> q = new Queue<WordRec>();
 		
-		String goalWord = startWord;
-		q.put(startRec);
+		q.put(start);
 		WordRec wr = null;
 		
 	    while (!q.isEmpty()) {
 	    	WordRec currentRec = q.get();
 	    	
-	    	ArrayList<String> neighbours = neighbourMap.get(currentRec.word);
+	    	ArrayList<String> neighbours = neighbourMap.get(currentRec.getWord());
 	    	
 	    	for(String neighbour : neighbours){
 	    		if(used.get(neighbour) == null){ // null is false
 	    			used.put(neighbour, true);
 	    			
-	    			wr = new WordRec(neighbour, currentRec);
-	    			if (goalWord != null && neighbour.equals(goalWord)) {
+	    			wr = new WordRec(neighbour, currentRec, true);
+	    			if (endWord != null && neighbour.equals(endWord)) {
 	    				return wr;
 	    			}
 	    			q.put(wr);
@@ -63,7 +61,7 @@ class WordGraph
 	    	}
 	    }
 	    
-	    if(startWord != null) {
+	    if(endWord != null) {
 	    	return null;
 	    }
 	    
@@ -71,12 +69,12 @@ class WordGraph
     }
     
     public WordRec shortestPathBetween(String startWord, String endWord) {
-    	return breadthFirst(startWord, endWord);
+    	return breadthFirst(endWord,startWord);
     }
 
     // CheckAllStartWords hittar den längsta kortaste vägen från något ord
     // till endWord.
-    public WordRec longestOfTheShortestPathsTo(String endWord){
-		return breadthFirst(null, endWord);
+    public WordRec longestOfTheShortestPathsTo(String startWord){
+		return breadthFirst(startWord, null);
     }
 }

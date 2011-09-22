@@ -1,4 +1,3 @@
-package givenfiles;
 // Queue är en kö med metoderna Put, Get, IsEmpty och Empty.
 
 class ListNode<E>

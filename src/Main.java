@@ -1,15 +1,13 @@
-package givenfiles;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import util.Timer;
 
 public class Main
 {
     final static private int WordLength = 4;
-    final static private boolean UseTimer = true;
+    final static private boolean UseTimer = false;
     
     public static void main (String args[]) throws IOException {
     	Timer timer = null;
@@ -35,7 +33,7 @@ public class Main
 		    	WordRec wr = wordGraph.longestOfTheShortestPathsTo(tokens[0]);
 		    	
 			    System.out.println(tokens[0] + " " + wr.ChainLength() + " ord");
-			    System.out.println(wr.getReversedChainString());
+			    System.out.println(wr);
 		    }
 		    else if (tokens.length == 2) {
 				WordRec wr = wordGraph.shortestPathBetween(tokens[0], tokens[1]);
@@ -43,7 +41,7 @@ public class Main
 				    System.out.println(tokens[0] + " " + tokens[1] + ": ingen lösning");
 				} else {
 				    System.out.println(tokens[0] + " " + tokens[1] + ": "+ wr.ChainLength() + " ord");
-				    System.out.println(wr.getReversedChainString());
+				    System.out.println(wr);
 				}
 		    }
 		    else{
