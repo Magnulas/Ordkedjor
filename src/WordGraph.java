@@ -7,10 +7,17 @@ import java.util.HashMap;
 class WordGraph
 {
     private HashMap<String, ArrayList<String>> neighbourMap; // ordlista
+    private final char [] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 
+		       'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 
+		       's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'å', 
+		       'ä', 'ö', 'é' };
+    private int wordLength;
     
-    public WordGraph(ArrayList<String> words) {
+    
+    public WordGraph(ArrayList<String> words, int wordLength) {
 		neighbourMap = new HashMap<String, ArrayList<String>>();
-
+		this.wordLength = wordLength;
+		
 		/**
 		 * Denna algoritm minskade med 1/4. Måste minska med ytterligare
 		 * 1/4 om vi wanna be the very best,
@@ -22,20 +29,21 @@ class WordGraph
 			neighbourMap.put(word, new ArrayList<String>());
 		}
 		
-		for(int i = 0;i<words.size()-1;i++) {
+		for(int i = 0;i<words.size();i++) {
 			String currentWord = words.get(i);
-			ArrayList<String> neighbours = neighbourMap.get(currentWord);
-			for(int j = i+1;j<words.size();j++) {
-				String otherWord = words.get(j);
-				if(areNeighbors(currentWord, otherWord)) {
-					neighbourMap.get(otherWord).add(currentWord);
-					neighbours.add(otherWord);
-				}
-			}
-//			neighbourMap.put(currentWord, neighbours);
+			makeNeighbours(currentWord);
+//			ArrayList<String> neighbours = neighbourMap.get(currentWord);
+//			for(int j = i+1;j<words.size();j++) {
+//				String otherWord = words.get(j);
+//				if(areNeighbors(currentWord, otherWord)) {
+//					neighbourMap.get(otherWord).add(currentWord);
+//					neighbours.add(otherWord);
+//				}
+//			}
 		}
     }
     
+    /*
     private boolean areNeighbors(String s1, String s2) {
     	int nDifferentChars = 0;
     	for(int i = 0; i < s1.length(); i++) {
@@ -47,6 +55,40 @@ class WordGraph
     		}
     	}
     	return nDifferentChars == 1;
+    }
+    */
+    
+    private void makeNeighbours(String word){
+    	    	
+    	ArrayList<String> neighbours = neighbourMap.get(word);
+    	char[] wordBuilder = new char[wordLength];
+    	for(int i = 0; i<wordLength;i++){
+    		
+    		wordBuilder[i] = word.charAt(i);
+    	}
+    	
+    	for (int i = 0; i < wordLength; i++) {
+    		for (int c = 0; c < alphabet.length; c++) {
+    			if (alphabet[c] != word.charAt(i)) {
+//    				StringBuilder sb = new StringBuilder(word.substring(0,i));
+//    				sb.append(alphabet[c]);
+//    				sb.append(word.substring(i+1));
+//    				String neighbour = sb.toString();
+    				
+    				wordBuilder[i] = alphabet[c];
+    				String neighbour = new String(wordBuilder);
+    				
+    				if(neighbourMap.containsKey(neighbour)){
+	    			    neighbours.add(neighbour);
+    				}
+    			}
+    		}
+    		wordBuilder[i] = word.charAt(i);
+    	}
+    
+    	if(true){
+    		return;
+    	}
     }
     
     private WordRec breadthFirst(String startWord,String endWord){
