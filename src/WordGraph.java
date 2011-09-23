@@ -1,143 +1,95 @@
 import java.util.ArrayList;
-import java.util.HashMap;
-
-// Klassen WordList innehåller en ordlista och en datastruktur som håller
-// reda på använda ord.
+import java.util.LinkedList;
 
 class WordGraph
 {
-    private HashMap<String, ArrayList<String>> neighbourMap; // ordlista
-    private final char [] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 
-		       'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 
-		       's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'å', 
-		       'ä', 'ö', 'é' };
-    private int wordLength;
+    private LinkedList<Integer>[] neighbourArray;
     
-    
-    public WordGraph(ArrayList<String> words, int wordLength) {
-		neighbourMap = new HashMap<String, ArrayList<String>>();
-		this.wordLength = wordLength;
+    @SuppressWarnings("unchecked")
+	public WordGraph(ArrayList<String> words) {
+		neighbourArray = new LinkedList[WordHasher.WORD_COMBINATIONS];
+		int[] hashValues = new int[words.size()];
 		
 		/**
-		 * Denna algoritm minskade med 1/4. Måste minska med ytterligare
-		 * 1/4 om vi wanna be the very best,
+		 * Denna algoritm minskade med 1/4. Måste minska ytterligare om vi 
+		 * wanna be the very best,
 		 * like no one ever was! 
 		 * To catch them is my real test
 		 * to train them is my cause!
 		 */
-		for(String word : words){
-			neighbourMap.put(word, new ArrayList<String>());
+		for(int i = 0;i<words.size();i++){
+//			String currentWord = ;
+			hashValues[i] = WordHasher.indexForWord(words.get(i));			
+//			makeNeighbours(currentWord, hashValues[i], i);
+			neighbourArray[hashValues[i]] = new LinkedList<Integer>();
 		}
 		
 		for(int i = 0;i<words.size();i++) {
 			String currentWord = words.get(i);
-			makeNeighbours(currentWord);
-//			ArrayList<String> neighbours = neighbourMap.get(currentWord);
-//			for(int j = i+1;j<words.size();j++) {
-//				String otherWord = words.get(j);
-//				if(areNeighbors(currentWord, otherWord)) {
-//					neighbourMap.get(otherWord).add(currentWord);
-//					neighbours.add(otherWord);
-//				}
-//			}
+			makeNeighbours(currentWord, hashValues[i]);
 		}
-    }
+    }    
     
-    /*
-    private boolean areNeighbors(String s1, String s2) {
-    	int nDifferentChars = 0;
-    	for(int i = 0; i < s1.length(); i++) {
-    		if(s1.charAt(i) != s2.charAt(i)) {
-    			nDifferentChars++;
-    			if(nDifferentChars >1) {
-    				return false;
-    			}
-    		}
-    	}
-    	return nDifferentChars == 1;
-    }
-    */
-    
-    private void makeNeighbours(String word){
+    private void makeNeighbours(String word, int index){
     	    	
-    	ArrayList<String> neighbours = neighbourMap.get(word);
-    	char[] wordBuilder = new char[wordLength];
-    	for(int i = 0; i<wordLength;i++){
-    		
-    		wordBuilder[i] = word.charAt(i);
-    	}
+    	LinkedList<Integer> neighbours = neighbourArray[index];
+    	char[] wordBuilder = new char[WordHasher.WordLength];
+    	wordBuilder = word.toCharArray();
+//    	for(int i = 0; i< WordHasher.WordLength;i++){
+//    		
+//    		wordBuilder[i] = word.charAt(i);
+//    	}
     	
-    	for (int i = 0; i < wordLength; i++) {
-    		for (int c = 0; c < alphabet.length; c++) {
-    			if (alphabet[c] != word.charAt(i)) {
-//    				StringBuilder sb = new StringBuilder(word.substring(0,i));
-//    				sb.append(alphabet[c]);
-//    				sb.append(word.substring(i+1));
-//    				String neighbour = sb.toString();
+    	for (int i = 0; i < WordHasher.WordLength; i++) {
+    		for (int c = 0; c < WordHasher.Alphabet.length; c++) {
+    			if (WordHasher.Alphabet[c] != word.charAt(i)) {
     				
-    				wordBuilder[i] = alphabet[c];
-    				String neighbour = new String(wordBuilder);
+    				wordBuilder[i] = WordHasher.Alphabet[c];
+    				int neighbour = WordHasher.indexForWord(wordBuilder);
     				
-    				if(neighbourMap.containsKey(neighbour)){
+    				if(neighbourArray[neighbour]!=null){
 	    			    neighbours.add(neighbour);
     				}
     			}
     		}
     		wordBuilder[i] = word.charAt(i);
     	}
-    
-    	if(true){
-    		return;
-    	}
     }
     
     private WordRec breadthFirst(String startWord,String endWord){
     	
-    	/**
-    	 * För att göra optimering borde vi kanske inte göra så många wordrec
-    	 *  objekt utan använda någon form av linkad lista?
-    	 */
+    	boolean[] used = new boolean[WordHasher.WORD_COMBINATIONS];
+    	Queue<HashRec> q = new Queue<HashRec>();
     	
-//    	Denna är för att kolla att man inte använder ett ord som inte finns.
-//    	Men i uppgiftslydelsen är det givet att alla ord man söker på finns
-//    	i ordlistan så detta är inte problemet.
-//    	Dock så var det problem om man sökte på ett isolerat ord, dvs. inga grannar.
-//    	Detta är ändrat nu och man får tillbaka en "kedja" med bara det ordet.
-//    	if(!neighbourMap.containsKey(startWord)){
-//    		return null;
-//    	}
+    	int startWordHash = WordHasher.indexForWord(startWord);
     	
-		WordRec start = new WordRec(startWord, null);
-	    HashMap<String, Boolean> used = new HashMap<String, Boolean>(); // databas med använda ord
-		Queue<WordRec> q = new Queue<WordRec>();
+		HashRec start = new HashRec(startWordHash, null);
+
+		int endWordHash = -1;
 		
+		if(endWord!=null){
+			endWordHash = WordHasher.indexForWord(endWord);
+		}
+
 		q.put(start);
-//    	Fanns problem för:
-//    	aaaa
-//    	aaan
-//    	#
-//    	aaaa
-//    	Ger:
-//    	aaaa 3 ord
-//    	aaaa -> aaan -> aaaa
-//		Fixat genom used.put(startWord,true);
-		used.put(startWord,true);
+		used[startWordHash] = true;
 		
-		WordRec wr = null;
+		HashRec wr = null;
+		HashRec currentRec = null;
 		
 	    while (!q.isEmpty()) {
-	    	WordRec currentRec = q.get();
 	    	
-	    	ArrayList<String> neighbours = neighbourMap.get(currentRec.getWord());
+	    	currentRec = q.get();
 	    	
-	    	for(String neighbour : neighbours){
-	    		if(used.get(neighbour) == null){ // null is false
-	    			used.put(neighbour, true);
-	    			
-	    			wr = new WordRec(neighbour, currentRec);
-	    			if (endWord != null && neighbour.equals(endWord)) {
-	    				wr.reverse();
-	    				return wr;
+	    	LinkedList<Integer> neighbours = neighbourArray[currentRec.topValue()];
+	    	
+	    	for(int neighbour : neighbours){
+	    		if(used[neighbour] == false){
+	    			used[neighbour] = true;
+	    		
+	    			wr = new HashRec(neighbour, currentRec);
+	    			if (endWord != null && neighbour == endWordHash) {
+	    				return wr.toWordRec();
 	    			}
 	    			q.put(wr);
 	    		}
@@ -147,12 +99,8 @@ class WordGraph
 	    if(endWord != null) {
 	    	return null;
 	    }
-	    
-	    if(wr!=null){
-	    	wr.reverse();
-	    }
-	    	
-	    return wr;
+	    	    	
+	    return wr.toWordRec();
     }
     
     public WordRec shortestPathBetween(String startWord, String endWord) {

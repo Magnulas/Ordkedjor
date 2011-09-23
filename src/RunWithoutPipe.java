@@ -24,9 +24,8 @@ public class RunWithoutPipe {
 		} else{
 			fileToRun = args[0];
 		}
-				
-		FileInputStream is = new FileInputStream(new File(fileToRun));
 		
+		FileInputStream is = new FileInputStream(new File(fileToRun));
 		System.setIn(is);
 		
 		Main.main(null);
